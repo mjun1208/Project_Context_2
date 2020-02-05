@@ -7,8 +7,10 @@ public class PipeLine : MonoBehaviour
     public enum PipeLine_State
     {
         PS_None,
-        PS_Straight,
-        PS_Corner
+        PS_Corner,
+        PS_I,
+        PS_T,
+        PS_X
     };
     public PipeLine_State MyState;
 
@@ -23,13 +25,15 @@ public class PipeLine : MonoBehaviour
 
     public bool b_IsPlaced = false;
 
-    [SerializeField] private GameObject Straight_Pipe;
     [SerializeField] private GameObject Corner_Pipe;
+    [SerializeField] private GameObject I_Pipe;
+    [SerializeField] private GameObject T_Pipe;
+    [SerializeField] private GameObject X_Pipe;
 
     // Start is called before the first frame update
     void Start()
     {
-        MyState = PipeLine_State.PS_Straight;
+        //MyState = PipeLine_State.PS_Corner;
         MyRotState = PipeLine_RotState.PRS_Left;
         StartCoroutine(SetState());
         StartCoroutine(SetRotState());
@@ -71,16 +75,34 @@ public class PipeLine : MonoBehaviour
             switch (MyState)
             {
                 case PipeLine_State.PS_None:
-                    Straight_Pipe.SetActive(false);
                     Corner_Pipe.SetActive(false);
-                    break;
-                case PipeLine_State.PS_Straight:
-                    Straight_Pipe.SetActive(true);
-                    Corner_Pipe.SetActive(false);
+                    I_Pipe.SetActive(false);
+                    T_Pipe.SetActive(false);
+                    X_Pipe.SetActive(false);
                     break;
                 case PipeLine_State.PS_Corner:
-                    Straight_Pipe.SetActive(false);
                     Corner_Pipe.SetActive(true);
+                    I_Pipe.SetActive(false);
+                    T_Pipe.SetActive(false);
+                    X_Pipe.SetActive(false);
+                    break;
+                case PipeLine_State.PS_I:
+                    Corner_Pipe.SetActive(false);
+                    I_Pipe.SetActive(true);
+                    T_Pipe.SetActive(false);
+                    X_Pipe.SetActive(false);
+                    break;
+                case PipeLine_State.PS_T:
+                    Corner_Pipe.SetActive(false);
+                    I_Pipe.SetActive(false);
+                    T_Pipe.SetActive(true);
+                    X_Pipe.SetActive(false);
+                    break;
+                case PipeLine_State.PS_X:
+                    Corner_Pipe.SetActive(false);
+                    I_Pipe.SetActive(false);
+                    T_Pipe.SetActive(false);
+                    X_Pipe.SetActive(true);
                     break;
             }
             yield return null;
