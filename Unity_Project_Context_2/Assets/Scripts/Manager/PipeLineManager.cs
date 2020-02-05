@@ -10,6 +10,7 @@ public class PipeLineManager : MonoBehaviour
     private PipeLine target_PipeLine_cs;
 
     private bool b_IsMouseDown = false;
+    private int i_Tile_LayerMask;// = 1 << LayerMask.NameToLayer("Tile");
     ////2.95,1,3   || 2.95,1,1  || 2.95,1,-1,  || 2.95,1,-3
     ////0,95,1,3   || 0,95,1,1  || 0,95,1,-1,  || 0,95,1,-3
     ////-0.95,1,3  || -0.95,1,1 || -0.95,1,-1, || -0.95,1,-3
@@ -28,8 +29,11 @@ public class PipeLineManager : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        i_Tile_LayerMask = 1 << LayerMask.NameToLayer("Tile");
+        //i_Tile_LayerMask = ~i_Tile_LayerMask;
+
+
         int i_PipeLineCount = 0;
-        
         for (int i = 0; i < 4; i++)
         {
              for (int j = 0; j < 4; j++)
@@ -53,11 +57,11 @@ public class PipeLineManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && !b_IsMouseDown)
         {
-            Debug.Log("Down");
+            //Debug.Log("Down");
             target_GameObject = GetClickedObject();
             if (target_GameObject != null && target_GameObject.gameObject.tag == "PipeLine")  //선택된게 나라면
             {
-                Debug.Log("MY tag is !!! : " + target_GameObject.gameObject.tag);
+                //Debug.Log("MY tag is !!! : " + target_GameObject.gameObject.tag);
                 b_IsMouseDown = true;
                 target_PipeLine_cs = target_GameObject.GetComponent<PipeLine>();
 
@@ -79,15 +83,27 @@ public class PipeLineManager : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Mouse0) && b_IsMouseDown)
         {
-            Debug.Log("Press");
-            Vector3 v_MousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);//Input.mousePosition;
+            //Debug.Log("Press");
+            Vector3 v_MousePos;// = Camera.main.ScreenToWorldPoint(Input.mousePosition);//Input.mousePosition;
             //v_MousePos = Camera.main.ScreenToWorldPoint(v_MousePos);
-            target_GameObject.transform.position = new Vector3(v_MousePos.x, 1.2f, v_MousePos.z);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (true == Physics.Raycast(ray, out hit, 30f, i_Tile_LayerMask))
+            {
+
+                //Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 0.1f);
+
+                //Debug.Log(hit.point);
+                v_MousePos = hit.point;
+
+                target_GameObject.transform.position = new Vector3(v_MousePos.x, 1.2f, v_MousePos.z);
+            }
         }
 
         if (Input.GetKeyUp(KeyCode.Mouse0) && b_IsMouseDown)
         {
-            Debug.Log("Up");
+            //Debug.Log("Up");
             b_IsMouseDown = false;
 
             target_GameObject.transform.position = SetPipeLinePosition(target_GameObject.transform.position);
@@ -127,20 +143,6 @@ public class PipeLineManager : MonoBehaviour
             }
         }
     }
-    //IEnumerator SetPipeLinePostion()
-    //{
-    //    while (true)
-    //    {
-    //        for (int i = 0; i < 4; i++)
-    //        {
-    //            for (int j = 0; j < 4; j++)
-    //            {
-    //                PipeLines_GameObject[i, j].transform.position = new Vector3(3 - i * 2, 1.2f , 3 - j * 2);
-    //            }
-    //        }
-    //        yield return null;
-    //    }
-    //}
 
     private GameObject GetClickedObject()
     {
@@ -148,7 +150,7 @@ public class PipeLineManager : MonoBehaviour
         target_GameObject = null;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); //마우스 포인트 근처 좌표를 만든다. 
 
-        if (true == (Physics.Raycast(ray.origin, ray.direction * 10, out hit)))   //마우스 근처에 오브젝트가 있는지 확인
+        if (true == (Physics.Raycast(ray, out hit, 100f, 1 << LayerMask.NameToLayer("PipeLine"))))   //마우스 근처에 오브젝트가 있는지 확인
         {
             //있으면 오브젝트를 저장한다.
             target_GameObject = hit.collider.gameObject;
