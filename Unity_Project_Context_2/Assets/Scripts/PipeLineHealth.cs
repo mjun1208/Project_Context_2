@@ -17,20 +17,27 @@ public class PipeLineHealth : MonoBehaviour
 	//call this funtion when a pipe is placed
 	public void StartBreaking() 
 	{
-		StartCoroutine(BreakDelay());
+        f_randomLiveTime = Random.Range(f_minRandomLife, f_maxRandomLife);
+        StartCoroutine(BreakDelay());
 	}
 
 	//break after a random time
     IEnumerator BreakDelay() 
 	{
+        Debug.Log(f_randomLiveTime);
 		yield return new WaitForSeconds(f_randomLiveTime);
 		Break();
 	}
 
 	void Break() 
 	{
-		transform.GetComponent<PipeLine>().MyState = PipeLine.PipeLine_State.PS_None;
-		transform.GetComponent<PipeLine>().b_IsPlaced = false;
-		PipesSpawn.instance.ReturnPipeToPool(gameObject);
-	}
+        transform.GetComponent<PipeLine>().PipeLine_State_To_None();
+        //transform.GetComponent<PipeLine>().MyState = PipeLine.PipeLine_State.PS_None;
+        //transform.GetComponent<PipeLine>().b_IsPlaced = false;
+        PipeLineManager.instance.b_IsPipeLinePlaced
+            [(int)transform.GetComponent<PipeLine>().v_MyPosition.x, 
+            (int)transform.GetComponent<PipeLine>().v_MyPosition.y,
+            (int) transform.GetComponent<PipeLine>().v_MyPosition.z] = false;
+        PipesSpawn.instance.ReturnPipeToPool(gameObject);
+    }
 }

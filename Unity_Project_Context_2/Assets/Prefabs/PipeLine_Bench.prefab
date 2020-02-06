@@ -168,7 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3313177904803644564}
   m_Layer: 10
-  m_Name: PipeLine_Banch
+  m_Name: PipeLine_Bench
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,10 +240,12 @@ MonoBehaviour:
   MyState: 1
   MyRotState: 0
   b_IsPlaced: 0
+  boxCollider: {fileID: 3313177906007165236}
   Corner_Pipe: {fileID: 2015808933686114230}
   I_Pipe: {fileID: 5094059690088664217}
   T_Pipe: {fileID: 5081367638505529329}
   X_Pipe: {fileID: 1904261360258387664}
+  b_OpenWay: 00000000
 --- !u!65 &3313177906007165236
 BoxCollider:
   m_ObjectHideFlags: 0

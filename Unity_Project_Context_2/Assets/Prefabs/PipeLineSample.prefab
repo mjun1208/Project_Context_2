@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1322000329877316204}
   - component: {fileID: 1322000329877316205}
   - component: {fileID: 1322000329877316202}
+  - component: {fileID: 1950864911684274782}
   m_Layer: 10
   m_Name: PipeLineSample
   m_TagString: PipeLine
@@ -51,10 +52,12 @@ MonoBehaviour:
   MyState: 0
   MyRotState: 0
   b_IsPlaced: 0
+  boxCollider: {fileID: 1322000329877316202}
   Corner_Pipe: {fileID: 2619936099234536680}
   I_Pipe: {fileID: 8724538762470401991}
   T_Pipe: {fileID: 8729895250563839151}
   X_Pipe: {fileID: 2724464563319186830}
+  b_OpenWay: 00000000
 --- !u!65 &1322000329877316202
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -68,6 +71,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 1.2, z: 1.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1950864911684274782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1322000329877316207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95acec38a21f753429dfddaab5d4d40e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  f_minRandomLife: 2
+  f_maxRandomLife: 10
 --- !u!1001 &722612701216730534
 PrefabInstance:
   m_ObjectHideFlags: 0

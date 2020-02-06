@@ -7,7 +7,8 @@ public class PipeLineManager : MonoBehaviour
     public static PipeLineManager instance;
     public List<PipeLine> BenchPipeLine_PipeLine_cs;
     public GameObject[,] PipeLines_Position_GameObject = new GameObject[4, 4];
-    private bool[,,] b_IsPipeLinePlaced;
+    [HideInInspector] public bool[,,] b_IsPipeLinePlaced;
+
     private GameObject target_GameObject;
     private PipeLine target_PipeLine_cs;
 
@@ -26,6 +27,9 @@ public class PipeLineManager : MonoBehaviour
     public GameObject PipeLine_GameObject;
 
     private bool b_IsPointerInButton = false;
+
+    private Vector3 v_CurPosition;
+
     ////2.95,1,3   || 2.95,1,1  || 2.95,1,-1,  || 2.95,1,-3
     ////0,95,1,3   || 0,95,1,1  || 0,95,1,-1,  || 0,95,1,-3
     ////-0.95,1,3  || -0.95,1,1 || -0.95,1,-1, || -0.95,1,-3
@@ -63,6 +67,7 @@ public class PipeLineManager : MonoBehaviour
 
     void Start()
     {
+        v_CurPosition = Vector3.zero;
         b_IsPointerInButton = false;
         f_ScrollOffset = 0;
         i_Floor = 0;
@@ -136,11 +141,6 @@ public class PipeLineManager : MonoBehaviour
 
                 if (true == Physics.Raycast(ray, out hit, 30f, i_Tile_LayerMask))
                 {
-
-                    //Debug.DrawRay(ray.origin, ray.direction * 20f, Color.red, 0.1f);
-
-                    //Debug.Log(hit.point);
-                    //Debug.Log(hit.point);
                     v_MousePos = hit.point;
 
                     target_GameObject.transform.position = new Vector3(v_MousePos.x, -i_Floor * 14 + 1.2f, v_MousePos.z);
@@ -172,12 +172,16 @@ public class PipeLineManager : MonoBehaviour
                 {
                     //Debug.Log("타겟 정보 : " + target_PipeLine_cs.MyState + " " + target_PipeLine_cs.MyRotState +
                     //          "생성 정보 : " + TempPipeLine_PipeLine_cs.MyState + " " + TempPipeLine_PipeLine_cs.MyRotState);
-                    GameObject TempPipeLine_GameObject = Instantiate(PipeLine_GameObject, v_TempPipeLine_Position, target_GameObject.transform.rotation);
+                    GameObject TempPipeLine_GameObject = PipesSpawn.instance.TakePipeFromPool(v_TempPipeLine_Position);//Instantiate(PipeLine_GameObject, v_TempPipeLine_Position, target_GameObject.transform.rotation);
 
                     PipeLine TempPipeLine_PipeLine_cs = TempPipeLine_GameObject.GetComponent<PipeLine>();
 
+                    TempPipeLine_PipeLine_cs.v_MyPosition = v_CurPosition;//;
                     TempPipeLine_PipeLine_cs.Exchange_PipeLine_Info(target_PipeLine_cs);
                     TempPipeLine_PipeLine_cs.b_IsPlaced = true;
+
+                    PipeLineHealth TempPipeLine_PipeLineHealth_cs = TempPipeLine_GameObject.GetComponent<PipeLineHealth>();
+                    TempPipeLine_PipeLineHealth_cs.StartBreaking();
 
                     target_GameObject.transform.localPosition = Vector3.zero;
                     target_PipeLine_cs.Reset_PipeLine_Info();
@@ -225,6 +229,8 @@ public class PipeLineManager : MonoBehaviour
 
                     x = i;
                     y = j;
+
+                    v_CurPosition = new Vector3(i_Floor, x, y);
                 }
             }
         }

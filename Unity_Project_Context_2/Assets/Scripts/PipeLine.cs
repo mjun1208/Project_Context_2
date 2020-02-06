@@ -25,12 +25,16 @@ public class PipeLine : MonoBehaviour
 
     public bool b_IsPlaced = true;
 
+    public BoxCollider boxCollider;
+
     [SerializeField] private GameObject Corner_Pipe;
     [SerializeField] private GameObject I_Pipe;
     [SerializeField] private GameObject T_Pipe;
     [SerializeField] private GameObject X_Pipe;
 
     [HideInInspector] public bool[] b_OpenWay = new bool[4];
+
+    [HideInInspector] public Vector3 v_MyPosition;
 
     private void Awake()
     {
@@ -39,7 +43,6 @@ public class PipeLine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
     }
 
     public void Reset_PipeLine_Info()
@@ -55,7 +58,22 @@ public class PipeLine : MonoBehaviour
         MyState = Target_cs.MyState;
         MyRotState = Target_cs.MyRotState;
 
+        StartCoroutine(SetState());
+        StartCoroutine(SetRotState());
+
         //b_IsPlaced = true;
+    }
+
+    public void PipeLine_State_To_None()
+    {
+        MyState = PipeLine_State.PS_None;
+        MyRotState = (PipeLine_RotState)Random.Range(0, 4);
+        StartCoroutine(SetState());
+        StartCoroutine(SetRotState());
+
+        b_IsPlaced = false;
+
+        this.transform.localPosition = Vector3.zero;
     }
 
     // Update is called once per frame
@@ -98,30 +116,40 @@ public class PipeLine : MonoBehaviour
                     I_Pipe.SetActive(false);
                     T_Pipe.SetActive(false);
                     X_Pipe.SetActive(false);
+
+                    boxCollider.enabled = false;
                     break;
                 case PipeLine_State.PS_Corner:
                     Corner_Pipe.SetActive(true);
                     I_Pipe.SetActive(false);
                     T_Pipe.SetActive(false);
                     X_Pipe.SetActive(false);
+
+                    boxCollider.enabled = true;
                     break;
                 case PipeLine_State.PS_I:
                     Corner_Pipe.SetActive(false);
                     I_Pipe.SetActive(true);
                     T_Pipe.SetActive(false);
                     X_Pipe.SetActive(false);
+
+                    boxCollider.enabled = true;
                     break;
                 case PipeLine_State.PS_T:
                     Corner_Pipe.SetActive(false);
                     I_Pipe.SetActive(false);
                     T_Pipe.SetActive(true);
                     X_Pipe.SetActive(false);
+
+                    boxCollider.enabled = true;
                     break;
                 case PipeLine_State.PS_X:
                     Corner_Pipe.SetActive(false);
                     I_Pipe.SetActive(false);
                     T_Pipe.SetActive(false);
                     X_Pipe.SetActive(true);
+
+                    boxCollider.enabled = true;
                     break;
             }
             yield return null;
