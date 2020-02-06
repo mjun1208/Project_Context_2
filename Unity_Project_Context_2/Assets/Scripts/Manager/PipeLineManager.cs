@@ -5,7 +5,7 @@ using UnityEngine;
 public class PipeLineManager : MonoBehaviour
 {
     public static PipeLineManager instance;
-    public List<GameObject> BenchPipeLine;
+    public List<PipeLine> BenchPipeLine_PipeLine_cs;
     public GameObject[,] PipeLines_Position_GameObject = new GameObject[4, 4];
     private bool[,,] b_IsPipeLinePlaced;
     private GameObject target_GameObject;
@@ -24,6 +24,8 @@ public class PipeLineManager : MonoBehaviour
     public TileManager tileManager;
 
     public GameObject PipeLine_GameObject;
+
+    private bool b_IsPointerInButton = false;
     ////2.95,1,3   || 2.95,1,1  || 2.95,1,-1,  || 2.95,1,-3
     ////0,95,1,3   || 0,95,1,1  || 0,95,1,-1,  || 0,95,1,-3
     ////-0.95,1,3  || -0.95,1,1 || -0.95,1,-1, || -0.95,1,-3
@@ -61,6 +63,7 @@ public class PipeLineManager : MonoBehaviour
 
     void Start()
     {
+        b_IsPointerInButton = false;
         f_ScrollOffset = 0;
         i_Floor = 0;
         //StartCoroutine(SetPipeLinePostion());
@@ -89,7 +92,7 @@ public class PipeLineManager : MonoBehaviour
             Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position , new Vector3(Camera.main.transform.position.x, 18 - (i_Floor * 14), Camera.main.transform.position.z), 0.5f);
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !b_IsPointerInButton)
         {
             //Debug.Log("Down");
             if (!b_IsMouseDown)
@@ -178,13 +181,13 @@ public class PipeLineManager : MonoBehaviour
 
                     target_GameObject.transform.localPosition = Vector3.zero;
                     target_PipeLine_cs.Reset_PipeLine_Info();
+                    target_PipeLine_cs.MyState = PipeLine.PipeLine_State.PS_None;
+                    target_PipeLine_cs.b_IsPlaced = false;
                 }
                 else
                 {
                     target_GameObject.transform.localPosition = Vector3.zero;
                 }
-                target_PipeLine_cs.b_IsPlaced = false;
-                //target_GameObject.SetActive(false);
                 target_GameObject = null;
             }
             else if (b_CameraScroll)
@@ -231,7 +234,7 @@ public class PipeLineManager : MonoBehaviour
         {
             target_PipeLine_cs.b_IsPlaced = true;
             b_IsPipeLinePlaced[i_Floor, x, y] = true;
-			PipesSpawn.instance.TakePipeFromStorage(target_PipeLine_cs.gameObject);
+			//PipesSpawn.instance.TakePipeFromStorage(target_PipeLine_cs.gameObject);
 		}
         else
         {
@@ -264,5 +267,32 @@ public class PipeLineManager : MonoBehaviour
             target_GameObject = hit.collider.gameObject;
         }
         return target_GameObject;
+    }
+
+    public void BuyPipeLine()
+    {
+        for (int i = 0; i < BenchPipeLine_PipeLine_cs.Count; i++)
+        {
+            if (BenchPipeLine_PipeLine_cs[i].MyState == PipeLine.PipeLine_State.PS_None)
+            {
+                BenchPipeLine_PipeLine_cs[i].Reset_PipeLine_Info();
+                return;
+            }
+        }
+
+    }
+
+    public void BuyButtonEnter()
+    {
+        //Debug.Log("Hi");
+        //b_CameraScroll = false;
+        //b_IsMouseDown = false;
+        b_IsPointerInButton = true;
+    }
+
+    public void BuyButtonExit()
+    {
+        //Debug.Log("Bye");
+        b_IsPointerInButton = false;
     }
 }

@@ -30,6 +30,8 @@ public class PipeLine : MonoBehaviour
     [SerializeField] private GameObject T_Pipe;
     [SerializeField] private GameObject X_Pipe;
 
+    [HideInInspector] public bool[] b_OpenWay = new bool[4];
+
     private void Awake()
     {
         Reset_PipeLine_Info();
