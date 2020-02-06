@@ -58,6 +58,7 @@ MonoBehaviour:
   T_Pipe: {fileID: 8729895250563839151}
   X_Pipe: {fileID: 2724464563319186830}
   b_OpenWay: 00000000
+  v_MyPosition: {x: 0, y: 0, z: 0}
 --- !u!65 &1322000329877316202
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -83,8 +84,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95acec38a21f753429dfddaab5d4d40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  f_minRandomLife: 2
-  f_maxRandomLife: 10
+  f_minRandomLife: 10
+  f_maxRandomLife: 20
 --- !u!1001 &722612701216730534
 PrefabInstance:
   m_ObjectHideFlags: 0
