@@ -23,20 +23,37 @@ public class PipeLine : MonoBehaviour
     };
     public PipeLine_RotState MyRotState;
 
-    public bool b_IsPlaced = false;
+    public bool b_IsPlaced = true;
 
     [SerializeField] private GameObject Corner_Pipe;
     [SerializeField] private GameObject I_Pipe;
     [SerializeField] private GameObject T_Pipe;
     [SerializeField] private GameObject X_Pipe;
 
+    private void Awake()
+    {
+        Reset_PipeLine_Info();
+    }
     // Start is called before the first frame update
     void Start()
     {
-        //MyState = PipeLine_State.PS_Corner;
-        MyRotState = PipeLine_RotState.PRS_Left;
+       
+    }
+
+    public void Reset_PipeLine_Info()
+    {
+        MyState = (PipeLine_State)Random.Range(1, 5); //.PS_Corner;
+        MyRotState = (PipeLine_RotState)Random.Range(0, 4);
         StartCoroutine(SetState());
         StartCoroutine(SetRotState());
+    }
+
+    public void Exchange_PipeLine_Info(PipeLine Target_cs)
+    {
+        MyState = Target_cs.MyState;
+        MyRotState = Target_cs.MyRotState;
+
+        //b_IsPlaced = true;
     }
 
     // Update is called once per frame

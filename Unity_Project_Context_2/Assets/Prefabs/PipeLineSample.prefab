@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1322000329877316204}
   - component: {fileID: 1322000329877316205}
   - component: {fileID: 1322000329877316202}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PipeLineSample
   m_TagString: PipeLine
   m_Icon: {fileID: 0}

@@ -50,7 +50,7 @@ public class TileManager : MonoBehaviour
             Tiles_BoxColl[i].enabled = false;
         }
         Tiles_BoxColl[i_LastFloor].enabled = true;
-        Debug.Log(i_LastFloor);
+        //Debug.Log(i_LastFloor);
         yield return null;
     }
 }

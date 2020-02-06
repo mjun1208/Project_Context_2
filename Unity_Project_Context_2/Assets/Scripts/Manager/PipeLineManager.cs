@@ -6,7 +6,7 @@ public class PipeLineManager : MonoBehaviour
 {
     public static PipeLineManager instance;
     public List<GameObject> BenchPipeLine;
-    public GameObject[,] PipeLines_GameObject = new GameObject[4, 4];
+    public GameObject[,] PipeLines_Position_GameObject = new GameObject[4, 4];
     private bool[,,] b_IsPipeLinePlaced;
     private GameObject target_GameObject;
     private PipeLine target_PipeLine_cs;
@@ -22,6 +22,8 @@ public class PipeLineManager : MonoBehaviour
     [HideInInspector] public int i_Floor;
 
     public TileManager tileManager;
+
+    public GameObject PipeLine_GameObject;
     ////2.95,1,3   || 2.95,1,1  || 2.95,1,-1,  || 2.95,1,-3
     ////0,95,1,3   || 0,95,1,1  || 0,95,1,-1,  || 0,95,1,-3
     ////-0.95,1,3  || -0.95,1,1 || -0.95,1,-1, || -0.95,1,-3
@@ -51,7 +53,7 @@ public class PipeLineManager : MonoBehaviour
         {
              for (int j = 0; j < 4; j++)
              {
-                PipeLines_GameObject[i, j] = this.transform.GetChild(i_PipeLineCount).gameObject;
+                PipeLines_Position_GameObject[i, j] = this.transform.GetChild(i_PipeLineCount).gameObject;
                 i_PipeLineCount++;
              }
         }
@@ -62,6 +64,7 @@ public class PipeLineManager : MonoBehaviour
         f_ScrollOffset = 0;
         i_Floor = 0;
         //StartCoroutine(SetPipeLinePostion());
+
         ResetPipeLinePosition();
         b_IsMouseDown = false;
 
@@ -97,6 +100,8 @@ public class PipeLineManager : MonoBehaviour
                     //Debug.Log("MY tag is !!! : " + target_GameObject.gameObject.tag);
                     b_IsMouseDown = true;
                     target_PipeLine_cs = target_GameObject.GetComponent<PipeLine>();
+
+                    //Debug.Log(target_PipeLine_cs.b_IsPlaced);
 
                     if (target_PipeLine_cs.b_IsPlaced)
                     {
@@ -156,7 +161,30 @@ public class PipeLineManager : MonoBehaviour
                 //Debug.Log("Up");
                 b_IsMouseDown = false;
 
-                target_GameObject.transform.position = SetPipeLinePosition(target_GameObject.transform.position);
+                //GameObject TempPipeLine_GameObject = PipeLine_GameObject;
+
+                Vector3 v_TempPipeLine_Position = SetPipeLinePosition(target_GameObject.transform.position);
+
+                if (v_TempPipeLine_Position != Vector3.zero)
+                {
+                    //Debug.Log("타겟 정보 : " + target_PipeLine_cs.MyState + " " + target_PipeLine_cs.MyRotState +
+                    //          "생성 정보 : " + TempPipeLine_PipeLine_cs.MyState + " " + TempPipeLine_PipeLine_cs.MyRotState);
+                    GameObject TempPipeLine_GameObject = Instantiate(PipeLine_GameObject, v_TempPipeLine_Position, target_GameObject.transform.rotation);
+
+                    PipeLine TempPipeLine_PipeLine_cs = TempPipeLine_GameObject.GetComponent<PipeLine>();
+
+                    TempPipeLine_PipeLine_cs.Exchange_PipeLine_Info(target_PipeLine_cs);
+                    TempPipeLine_PipeLine_cs.b_IsPlaced = true;
+
+                    target_GameObject.transform.localPosition = Vector3.zero;
+                    target_PipeLine_cs.Reset_PipeLine_Info();
+                }
+                else
+                {
+                    target_GameObject.transform.localPosition = Vector3.zero;
+                }
+                target_PipeLine_cs.b_IsPlaced = false;
+                //target_GameObject.SetActive(false);
                 target_GameObject = null;
             }
             else if (b_CameraScroll)
@@ -167,6 +195,9 @@ public class PipeLineManager : MonoBehaviour
                     i_Floor = (int)Mathf.Abs(Camera.main.transform.position.y - 18 - 7) / 14;
                 else
                     i_Floor = 0;
+
+                if (i_Floor > 4)
+                    i_Floor = 4;
 
                 ResetPipeLinePosition();
             }
@@ -183,28 +214,28 @@ public class PipeLineManager : MonoBehaviour
         {
             for (int j = 0; j < 4; j++)
             {
-                float f_CurDistance = Vector3.Distance(v_MyPosition, PipeLines_GameObject[i, j].transform.position);
+                float f_CurDistance = Vector3.Distance(v_MyPosition, PipeLines_Position_GameObject[i, j].transform.position);
                 if (f_CurDistance < f_MinDistance)
                 {
                     f_MinDistance = f_CurDistance;
-
-                    v_PipeLinePosition = PipeLines_GameObject[i, j].transform.position;
+                    v_PipeLinePosition = PipeLines_Position_GameObject[i, j].transform.position;
 
                     x = i;
                     y = j;
                 }
             }
         }
+        //Debug.Log(f_MinDistance);
 
-        if (!b_IsPipeLinePlaced[i_Floor, x, y])
+        if (!b_IsPipeLinePlaced[i_Floor, x, y] && f_MinDistance < 2f)
         {
             target_PipeLine_cs.b_IsPlaced = true;
             b_IsPipeLinePlaced[i_Floor, x, y] = true;
         }
         else
         {
-            Debug.Log(b_IsPipeLinePlaced[i_Floor, x, y]);
-            return v_MyPosition;
+            //Debug.Log(b_IsPipeLinePlaced[i_Floor, x, y]);
+            return Vector3.zero;
         }
         return v_PipeLinePosition;
     }
@@ -215,7 +246,7 @@ public class PipeLineManager : MonoBehaviour
         {
             for (int j = 0; j < 4; j++)
             {
-                PipeLines_GameObject[i, j].transform.position = new Vector3(3 - i * 2, -i_Floor * 14 + 1.2f, 3 - j * 2);
+                PipeLines_Position_GameObject[i, j].transform.position = new Vector3(3 - i * 2, -i_Floor * 14 + 1.2f, 3 - j * 2);
             }
         }
     }
