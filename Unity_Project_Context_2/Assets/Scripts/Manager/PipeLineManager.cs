@@ -231,7 +231,8 @@ public class PipeLineManager : MonoBehaviour
         {
             target_PipeLine_cs.b_IsPlaced = true;
             b_IsPipeLinePlaced[i_Floor, x, y] = true;
-        }
+			PipesSpawn.instance.TakePipeFromStorage(target_PipeLine_cs.gameObject);
+		}
         else
         {
             //Debug.Log(b_IsPipeLinePlaced[i_Floor, x, y]);
