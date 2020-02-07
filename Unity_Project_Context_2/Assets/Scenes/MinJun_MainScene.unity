@@ -346,6 +346,41 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 940fcc516e72f2743b7947974b5db5e2, type: 3}
+--- !u!1 &180273083 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3538261907327315802, guid: 7138eac3aae069c4ebb6e9ff3bc7f643,
+    type: 3}
+  m_PrefabInstance: {fileID: 3538261907541203386}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &180273084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180273083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d0b0b2d757459409849852b52555f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlacedPipeLine: []
+  v_WaterFlowPlace:
+  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 2}
+  - {x: 0, y: 0, z: 3}
+  - {x: 1, y: 0, z: 1}
+  - {x: 1, y: 0, z: 2}
+  - {x: 1, y: 0, z: 3}
+  - {x: 2, y: 0, z: 1}
+  - {x: 2, y: 0, z: 2}
+  - {x: 2, y: 0, z: 3}
+  - {x: 3, y: 0, z: 1}
+  - {x: 3, y: 0, z: 2}
+  - {x: 3, y: 0, z: 3}
+  - {x: 4, y: 0, z: 1}
+  - {x: 4, y: 0, z: 2}
+  - {x: 4, y: 0, z: 3}
 --- !u!1 &180996141
 GameObject:
   m_ObjectHideFlags: 0
@@ -885,6 +920,11 @@ MonoBehaviour:
   T_Pipe: {fileID: 0}
   X_Pipe: {fileID: 0}
   b_OpenWay: 00000000
+  b_IsWater: 0
+  Test_WaterSwitch_MeshRenderer: {fileID: 0}
+  Test_WaterSwitch_Material:
+  - {fileID: 0}
+  - {fileID: 0}
   v_MyPosition: {x: 0, y: 0, z: 0}
 --- !u!4 &665036582
 Transform:
@@ -1909,7 +1949,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 3538261907541203386}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 180273083}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6cbeff66c184b34696d4ad5ca1db2d9, type: 3}

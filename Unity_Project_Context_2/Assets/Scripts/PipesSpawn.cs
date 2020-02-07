@@ -178,6 +178,7 @@ public class PipesSpawn : MonoBehaviour
     public void ReturnPipeToPool(GameObject pipe)
     {
         PipePool.Add(pipe);
+        WaterFlowManager.instance.PlacedPipeLine.Remove(pipe);
         pipe.GetComponent<PipeLine>().PipeLine_State_To_None();
     }
 
@@ -187,7 +188,9 @@ public class PipesSpawn : MonoBehaviour
         {
             GameObject Temp = PipePool[PipePool.Count - 1];
             Temp.transform.position = v_Pos;
+            WaterFlowManager.instance.PlacedPipeLine.Add(Temp);
             PipePool.Remove(PipePool[PipePool.Count - 1]);
+
             return Temp;
         }
 

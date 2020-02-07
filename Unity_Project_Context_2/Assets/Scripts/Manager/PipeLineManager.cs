@@ -119,6 +119,8 @@ public class PipeLineManager : MonoBehaviour
                             target_PipeLine_cs.MyRotState++;
 
                         b_IsMouseDown = false;
+
+                        target_PipeLine_cs.b_IsWater = false;
                     }
                 }
                 else

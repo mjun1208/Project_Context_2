@@ -24,7 +24,7 @@ public class PipeLineHealth : MonoBehaviour
 	//break after a random time
     IEnumerator BreakDelay() 
 	{
-        Debug.Log(f_randomLiveTime);
+        //Debug.Log(f_randomLiveTime);
 		yield return new WaitForSeconds(f_randomLiveTime);
 		Break();
 	}
